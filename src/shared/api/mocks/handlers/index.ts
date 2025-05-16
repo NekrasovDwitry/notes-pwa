@@ -29,7 +29,7 @@ export const handlers = [
     };
     notes.push(note);
 
-      return HttpResponse.json(note, { status: 201 });
+    return HttpResponse.json(note, { status: 201 });
   }),
 
   http.put("/notes/{noteId}", async (ctx) => {

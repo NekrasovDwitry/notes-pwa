@@ -21,7 +21,7 @@ function NotePage() {
   const editNoteMutation = rqClient.useMutation("put", "/notes/{noteId}", {
     onSettled: async () => {
       await queryClient.invalidateQueries(
-          rqClient.queryOptions("get", "/notes"),
+        rqClient.queryOptions("get", "/notes"),
       );
     },
   });
@@ -29,37 +29,37 @@ function NotePage() {
   if (!note) return <div>Note not found</div>;
 
   return (
-      <div>
-        <h1>Edit Note</h1>
-        <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              editNoteMutation.mutate({
-                params: { path: { noteId: noteId! } },
-                body: {
-                  title: form.title,
-                  content: form.content,
-                },
-              });
-            }}
-        >
-          <input
-              name="title"
-              type="text"
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-          />
-          <input
-              name="content"
-              type="text"
-              value={form.content}
-              onChange={(e) => setForm({ ...form, content: e.target.value })}
-          />
-          <button type="submit" disabled={editNoteMutation.isPending}>
-            Save
-          </button>
-        </form>
-      </div>
+    <div>
+      <h1>Edit Note</h1>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          editNoteMutation.mutate({
+            params: { path: { noteId: noteId! } },
+            body: {
+              title: form.title,
+              content: form.content,
+            },
+          });
+        }}
+      >
+        <input
+          name="title"
+          type="text"
+          value={form.title}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+        />
+        <input
+          name="content"
+          type="text"
+          value={form.content}
+          onChange={(e) => setForm({ ...form, content: e.target.value })}
+        />
+        <button type="submit" disabled={editNoteMutation.isPending}>
+          Save
+        </button>
+      </form>
+    </div>
   );
 }
 
