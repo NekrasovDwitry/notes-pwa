@@ -1,0 +1,44 @@
+.container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 200px;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.cardHeader,
+.cardContent,
+.cardFooter {
+  padding: 1.5rem;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.cardDescription {
+  margin-top: 0.5rem;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.footerText {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.footerText a {
+  color: #3b82f6;
+  text-decoration: underline;
+}

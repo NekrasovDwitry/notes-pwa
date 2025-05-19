@@ -3,6 +3,7 @@ import { ROUTES, type PathParams } from "@/shared/model/routes.tsx";
 import { rqClient } from "@/shared/api/instance.ts";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import styles from "./styles.module.scss";
 
 function NotePage() {
   const params = useParams<PathParams[typeof ROUTES.NOTE]>();
@@ -26,12 +27,13 @@ function NotePage() {
     },
   });
 
-  if (!note) return <div>Note not found</div>;
+  if (!note) return <div className={styles.notFound}>Note not found</div>;
 
   return (
-    <div>
-      <h1>Edit Note</h1>
+    <div className={styles.page}>
+      <h1 className={styles.heading}>Edit Note</h1>
       <form
+        className={styles.form}
         onSubmit={(e) => {
           e.preventDefault();
           editNoteMutation.mutate({
@@ -46,16 +48,22 @@ function NotePage() {
         <input
           name="title"
           type="text"
+          className={styles.input}
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}
         />
         <input
           name="content"
           type="text"
+          className={styles.input}
           value={form.content}
           onChange={(e) => setForm({ ...form, content: e.target.value })}
         />
-        <button type="submit" disabled={editNoteMutation.isPending}>
+        <button
+          type="submit"
+          className={styles.button}
+          disabled={editNoteMutation.isPending}
+        >
           Save
         </button>
       </form>

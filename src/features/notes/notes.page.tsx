@@ -2,6 +2,7 @@ import { href, Link } from "react-router-dom";
 import { ROUTES } from "@/shared/model/routes.tsx";
 import { rqClient } from "@/shared/api/instance.ts";
 import { useQueryClient } from "@tanstack/react-query";
+import styles from "./styles.module.scss";
 
 function NotesPage() {
   const queryClient = useQueryClient();
@@ -24,34 +25,49 @@ function NotesPage() {
   });
 
   return (
-    <div>
-      <h1>Notes</h1>
+    <div className={styles.page}>
+      <h1 className={styles.heading}>Notes</h1>
 
       <form
+        className={styles.form}
         onSubmit={(e) => {
           e.preventDefault();
-
           const formData = new FormData(e.target as HTMLFormElement);
-
           createNoteMutation.mutate({
             body: {
               title: formData.get("title") as string,
               content: formData.get("content") as string,
             },
           });
+          e.currentTarget.reset(); // clear form after submit
         }}
       >
-        <input name="title" type="text" />
-        <input name="content" type="text" />
-        <button type="submit" disabled={createNoteMutation.isPending}>
+        <input
+          name="title"
+          type="text"
+          placeholder="Title"
+          className={styles.input}
+        />
+        <input
+          name="content"
+          type="text"
+          placeholder="Content"
+          className={styles.input}
+        />
+        <button
+          type="submit"
+          className={styles.button}
+          disabled={createNoteMutation.isPending}
+        >
           Create note
         </button>
       </form>
 
       {notesQuery.data?.map((note) => (
-        <div key={note.id}>
+        <div className={styles.note} key={note.id}>
           <Link to={href(ROUTES.NOTE, { noteId: note.id })}>{note.title}</Link>
           <button
+            className={styles.button}
             disabled={deleteNoteMutation.isPending}
             onClick={() =>
               deleteNoteMutation.mutate({
