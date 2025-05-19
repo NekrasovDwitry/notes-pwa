@@ -35,17 +35,20 @@ src/
 ## 🚀 Getting Started
 
 1. **Clone the repository**
+
    ```bash
    git clone [repository-url]
    cd notes-pwa
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -68,6 +71,7 @@ src/
 ### Code Organization
 
 The project follows a feature-based architecture:
+
 - `app/` - Contains application-wide components and configuration
 - `features/` - Contains feature-specific modules
 - `shared/` - Contains shared utilities, types, and API definitions
@@ -79,6 +83,7 @@ The project uses OpenAPI for type-safe API integration. API types are generated 
 ### Code Quality
 
 The project uses ESLint with strict TypeScript rules and Prettier for code formatting. The configuration includes:
+
 - Type-aware linting rules
 - React-specific rules
 - Import sorting and organization
