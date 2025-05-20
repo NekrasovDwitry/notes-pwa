@@ -15,6 +15,7 @@ A modern Progressive Web Application for note-taking, built with React, TypeScri
 - ESLint and Prettier for code quality
 - MSW for API mocking
 - SASS for styling
+- TipTap for text editing
 
 ## 📦 Project Structure
 
@@ -27,7 +28,8 @@ src/
 │   └── notes/    # Notes list and management
 └── shared/       # Shared utilities, types, and API definitions
     ├── api/      # API integration and types
-    └── model/    # Shared data models
+    ├── model/    # Shared data models
+    └── ui/       # Shared UI
 ```
 
 ## 🛠️ Tech Stack
@@ -35,7 +37,7 @@ src/
 - **Framework**: React 19
 - **Language**: TypeScript
 - **Build Tool**: Vite 6
-- **State Management**: 
+- **State Management**:
   - MobX for local state
   - React Query for server state
 - **Form Handling**: React Hook Form + Zod
@@ -45,21 +47,25 @@ src/
 - **Styling**: SASS
 - **Code Quality**: ESLint, Prettier
 - **API Mocking**: MSW
+- **Text Editor**: TipTap
 
 ## 🚀 Getting Started
 
 1. **Clone the repository**
+
    ```bash
    git clone [repository-url]
    cd notes-pwa
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -82,6 +88,7 @@ src/
 ### Code Organization
 
 The project follows a feature-based architecture:
+
 - `app/` - Contains application-wide components and configuration
 - `features/` - Contains feature-specific modules:
   - `auth/` - Authentication and authorization
@@ -90,10 +97,12 @@ The project follows a feature-based architecture:
 - `shared/` - Contains shared utilities, types, and API definitions:
   - `api/` - API integration and type definitions
   - `model/` - Shared data models
+  - `ui/` - Shared UI
 
 ### State Management
 
 The project uses a combination of state management solutions:
+
 - MobX for local state management
 - React Query for server state management
 - React Hook Form for form state
@@ -101,6 +110,7 @@ The project uses a combination of state management solutions:
 ### Form Handling
 
 Forms are managed using React Hook Form with Zod validation:
+
 - Type-safe form validation
 - Efficient form state management
 - Built-in error handling
@@ -108,6 +118,7 @@ Forms are managed using React Hook Form with Zod validation:
 ### API Integration
 
 The project uses OpenAPI for type-safe API integration:
+
 - API types are generated from the schema at `src/shared/api/schema/main.yaml`
 - MSW for API mocking in development
 - React Query for data fetching and caching
@@ -115,6 +126,7 @@ The project uses OpenAPI for type-safe API integration:
 ### Code Quality
 
 The project uses ESLint with strict TypeScript rules and Prettier for code formatting:
+
 - Type-aware linting rules
 - React-specific rules
 - Import sorting and organization

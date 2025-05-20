@@ -2,7 +2,7 @@ import { Navigate, Outlet, redirect } from "react-router-dom";
 import { ROUTES } from "@/shared/model/routes.tsx";
 import { observer } from "mobx-react-lite";
 import { sessionStore } from "@/shared/model/session.ts";
-import {enableMocking} from "@/shared/api/mocks";
+import { enableMocking } from "@/shared/api/mocks";
 
 export const protectedLoader = async () => {
   await enableMocking();
