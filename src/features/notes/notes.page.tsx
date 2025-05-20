@@ -2,17 +2,26 @@ import { href, Link } from "react-router-dom";
 import { ROUTES } from "@/shared/model/routes.tsx";
 import { rqClient } from "@/shared/api/instance.ts";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState, useCallback } from "react";
+import { Editor } from "@/shared/ui/editor";
 import styles from "./styles.module.scss";
 
 function NotesPage() {
   const queryClient = useQueryClient();
   const notesQuery = rqClient.useQuery("get", "/notes");
 
+  const [content, setContent] = useState("");
+
+  const handleContentChange = useCallback((newContent: string) => {
+    setContent(newContent);
+  }, []);
+
   const createNoteMutation = rqClient.useMutation("post", "/notes", {
     onSettled: async () => {
       await queryClient.invalidateQueries(
         rqClient.queryOptions("get", "/notes"),
       );
+      setContent("");
     },
   });
 
@@ -24,6 +33,14 @@ function NotesPage() {
     },
   });
 
+  // Extract first paragraph as title
+  const getTitleFromContent = (html: string) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+    const firstParagraph = tempDiv.querySelector("p");
+    return firstParagraph?.textContent?.trim() || "Untitled Note";
+  };
+
   return (
     <div className={styles.page}>
       <h1 className={styles.heading}>Notes</h1>
@@ -32,28 +49,15 @@ function NotesPage() {
         className={styles.form}
         onSubmit={(e) => {
           e.preventDefault();
-          const formData = new FormData(e.target as HTMLFormElement);
           createNoteMutation.mutate({
             body: {
-              title: formData.get("title") as string,
-              content: formData.get("content") as string,
+              title: getTitleFromContent(content),
+              content: content,
             },
           });
-          e.currentTarget.reset(); // clear form after submit
         }}
       >
-        <input
-          name="title"
-          type="text"
-          placeholder="Title"
-          className={styles.input}
-        />
-        <input
-          name="content"
-          type="text"
-          placeholder="Content"
-          className={styles.input}
-        />
+        <Editor content={content} onChange={handleContentChange} />
         <button
           type="submit"
           className={styles.button}
