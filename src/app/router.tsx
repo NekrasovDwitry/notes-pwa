@@ -1,34 +1,18 @@
 import { ROUTES } from "@/shared/model/routes";
 import { createBrowserRouter, redirect } from "react-router-dom";
 import App from "./App.tsx";
-import { Providers } from "@/app/providers.tsx";
-import { protectedLoader, ProtectedRoute } from "@/app/protected-route.tsx";
 
 export const router = createBrowserRouter([
   {
-    element: (
-      <Providers>
-        <App />
-      </Providers>
-    ),
+    element: <App />,
     children: [
       {
-        loader: protectedLoader,
-        element: <ProtectedRoute />,
-        children: [
-          {
-            path: ROUTES.NOTES,
-            lazy: () => import("@/features/notes/notes.page"),
-          },
-          {
-            path: ROUTES.NOTE,
-            lazy: () => import("@/features/note/note.page"),
-          },
-          {
-            path: ROUTES.HOME,
-            loader: () => redirect(ROUTES.NOTES),
-          },
-        ],
+        path: ROUTES.NOTES,
+        lazy: () => import("@/features/notes/notes.page"),
+      },
+      {
+        path: ROUTES.NOTE,
+        lazy: () => import("@/features/note/note.page"),
       },
       {
         path: ROUTES.LOGIN,
@@ -37,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.REGISTER,
         lazy: () => import("@/features/auth/register.page"),
+      },
+      {
+        path: ROUTES.HOME,
+        loader: () => redirect(ROUTES.NOTES),
       },
     ],
   },

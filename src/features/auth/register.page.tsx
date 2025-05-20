@@ -1,21 +1,5 @@
-import { ROUTES } from "@/shared/model/routes";
-import { Link } from "react-router-dom";
-import { RegisterForm } from "./ui/register-form/register-form";
-import { AuthLayout } from "./ui/auth-layout/auth-layout";
-
 function RegisterPage() {
-  return (
-    <AuthLayout
-      title="Регистрация"
-      description="Введите ваш email и пароль для регистрации в системе"
-      form={<RegisterForm />}
-      footerText={
-        <>
-          Уже есть аккаунт? <Link to={ROUTES.LOGIN}>Войти</Link>
-        </>
-      }
-    />
-  );
+  return <div>Register page</div>;
 }
 
 export const Component = RegisterPage;
