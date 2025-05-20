@@ -1,0 +1,39 @@
+openapi: 3.0.0
+info:
+  title: Notes API
+  description: Notes API
+  version: 1.0.0
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /auth/login:
+    post:
+      $ref: "./endpoints/auth.yaml#/login"
+
+  /auth/register:
+    post:
+      $ref: "./endpoints/auth.yaml#/register"
+
+  /auth/refresh:
+    post:
+      $ref: "./endpoints/auth.yaml#/refresh"
+
+  /notes:
+    get:
+      $ref: "./endpoints/notes.yaml#/getAllNotes"
+
+    post:
+      $ref: "./endpoints/notes.yaml#/createNote"
+
+  /notes/{noteId}:
+    delete:
+      $ref: "./endpoints/notes.yaml#/deleteNote"
+
+    put:
+      $ref: "./endpoints/notes.yaml#/editNote"
