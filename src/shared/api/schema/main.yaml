@@ -32,6 +32,9 @@ paths:
       $ref: "./endpoints/notes.yaml#/createNote"
 
   /notes/{noteId}:
+    get:
+      $ref: "./endpoints/notes.yaml#/getNoteById"
+
     delete:
       $ref: "./endpoints/notes.yaml#/deleteNote"
 

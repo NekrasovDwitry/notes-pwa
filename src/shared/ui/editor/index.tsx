@@ -37,6 +37,12 @@ export function Editor({ content, onChange }: EditorProps) {
     [onChange],
   );
 
+  const handleCreate = ({ editor }: { editor: TipTapEditor }) => {
+    if (!content) {
+      editor.chain().focus().setHeading({ level: 1 }).toggleBold().run();
+    }
+  };
+
   const editor = useEditor({
     extensions: [
       Document,
@@ -63,6 +69,7 @@ export function Editor({ content, onChange }: EditorProps) {
     content,
     autofocus: "end",
     onUpdate: handleUpdate,
+    onCreate: handleCreate,
   });
 
   if (!editor) {

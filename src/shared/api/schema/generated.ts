@@ -135,7 +135,12 @@ export interface paths {
     /** Get all notes for current user */
     get: {
       parameters: {
-        query?: never;
+        query?: {
+          page?: number;
+          limit?: number;
+          sort?: "createdAt" | "updatedAt" | "content";
+          search?: string;
+        };
         header?: never;
         path?: never;
         cookie?: never;
@@ -148,7 +153,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["Note"][];
+            "application/json": components["schemas"]["Notes"];
           };
         };
         401: components["responses"]["UnauthorizedError"];
@@ -163,11 +168,7 @@ export interface paths {
         path?: never;
         cookie?: never;
       };
-      requestBody: {
-        content: {
-          "application/json": components["schemas"]["CreateNote"];
-        };
-      };
+      requestBody?: never;
       responses: {
         /** @description Note created successfully */
         201: {
@@ -194,7 +195,31 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    get?: never;
+    /** Get a note by id */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          noteId: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Note */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["Note"];
+          };
+        };
+        401: components["responses"]["UnauthorizedError"];
+        404: components["responses"]["NotFoundError"];
+      };
+    };
     /** Edit a note */
     put: {
       parameters: {
@@ -212,7 +237,7 @@ export interface paths {
       };
       responses: {
         /** @description Note updated successfully */
-        200: {
+        201: {
           headers: {
             [name: string]: unknown;
           };
@@ -284,15 +309,18 @@ export interface components {
     };
     Note: {
       id: string;
-      title: string;
       content: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
     };
-    CreateNote: {
-      title: string;
-      content: string;
+    Notes: {
+      list: components["schemas"]["Note"][];
+      total: number;
+      totalPages: number;
     };
     EditNote: {
-      title: string;
       content: string;
     };
   };

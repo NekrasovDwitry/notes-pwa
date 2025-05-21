@@ -10,18 +10,24 @@
   margin-bottom: 1.5rem;
 }
 
-.form {
+.filters {
   display: flex;
-  flex-direction: column;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
-.input {
-  padding: 0.5rem 0.75rem;
+.searchInput {
+  padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
+  border-radius: 4px;
+  flex-grow: 1;
+}
+
+.sortSelect {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
 }
 
 .button {
@@ -39,6 +45,13 @@
   }
 }
 
+.notes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
 .note {
   display: flex;
   justify-content: space-between;
@@ -46,7 +59,6 @@
   padding: 0.75rem;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
-  margin-bottom: 0.5rem;
 
   a {
     text-decoration: none;
@@ -57,4 +69,22 @@
       text-decoration: underline;
     }
   }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.observer {
+  height: 20px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.loading {
+  padding: 20px;
+  text-align: center;
+  color: #666;
 }
