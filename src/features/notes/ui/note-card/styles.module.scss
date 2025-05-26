@@ -1,0 +1,56 @@
+.noteCard {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  background: white;
+  transition: all 0.2s;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.cardTitle {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #333;
+}
+
+.cardPreview {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.cardDate {
+  display: block;
+  font-size: 12px;
+  color: #999;
+}
+
+.cardDeleteButton {
+  margin-top: 12px;
+  padding: 6px 12px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #c82333;
+  }
+
+  &:disabled {
+    background: #e9ecef;
+    cursor: not-allowed;
+  }
+}
