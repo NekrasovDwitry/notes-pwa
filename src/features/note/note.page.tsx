@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ROUTES, type PathParams } from "@/shared/model/routes";
 import { useState, useCallback } from "react";
 import { Editor } from "@/shared/ui/editor";
@@ -8,6 +8,7 @@ import { useGetNote } from "@/features/note/model/use-get-note.ts";
 
 function NotePage() {
   const params = useParams<PathParams[typeof ROUTES.NOTE]>();
+  const navigate = useNavigate();
   const noteId = params.noteId!;
 
   const { note, isLoading, isError } = useGetNote(noteId);
@@ -28,7 +29,15 @@ function NotePage() {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.heading}>Edit Note</h1>
+      <div className={styles.header}>
+        <button
+          onClick={() => navigate(ROUTES.NOTES)}
+          className={styles.backButton}
+        >
+          ← Back to Notes
+        </button>
+        <h1 className={styles.heading}>Edit Note</h1>
+      </div>
       <form
         className={styles.form}
         onSubmit={(e) => {

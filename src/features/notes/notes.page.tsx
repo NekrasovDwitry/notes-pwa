@@ -1,20 +1,26 @@
-import { Link, href } from "react-router-dom";
-import { ROUTES } from "@/shared/model/routes";
 import styles from "./styles.module.scss";
 import { useCreateNote } from "@/features/notes/model/use-create-note";
 import { useDeleteNote } from "@/features/notes/model/use-delete-note";
 import { useGetNotes } from "@/features/notes/model/use-get-notes";
-import {
-  type NotesSortOption,
-  useFilterNotes,
-} from "@/features/notes/model/use-filter-notes";
-import dayjs from "dayjs";
+import { useFilterNotes } from "@/features/notes/model/use-filter-notes";
 import { useDebounceValue } from "@/shared/hooks/use-debounce-value.ts";
+import { Search } from "./ui/search/search";
+import { Sort } from "./ui/sort/sort";
+import { NoteItem } from "./ui/note-item/note-item";
+import { NoteCard } from "./ui/note-card/note-card";
+import {
+  ViewMode,
+  type ViewMode as ViewModeType,
+} from "./ui/view-mode/view-mode";
+import { FiltersLayout } from "./ui/filters-layout/filters-layout";
+import { NotesLayout } from "./ui/notes-layout/notes-layout";
+import { useState } from "react";
 
 function NotesPage() {
   const { isPending: isCreating, createNote } = useCreateNote();
   const { deleteNote, getIsPending } = useDeleteNote();
   const { search, sort, setSearch, setSort } = useFilterNotes();
+  const [viewMode, setViewMode] = useState<ViewModeType>("list");
   const debouncedSearch = useDebounceValue(search, 300);
   const { notes, isPending, isFetchingNextPage, hasNextPage, cursorRef } =
     useGetNotes({
@@ -23,34 +29,37 @@ function NotesPage() {
       sort,
     });
 
-  const getTitleFromContent = (content: string) =>
-    new DOMParser()
-      .parseFromString(content, "text/html")
-      .body.firstElementChild?.textContent?.trim() || "Untitled Note";
+  const noteElements = notes.map((note) =>
+    viewMode === "list" ? (
+      <NoteItem
+        key={note.id}
+        id={note.id}
+        content={note.content}
+        updatedAt={note.updatedAt}
+        isDeleting={getIsPending(note.id)}
+        onDelete={deleteNote}
+      />
+    ) : (
+      <NoteCard
+        key={note.id}
+        id={note.id}
+        content={note.content}
+        updatedAt={note.updatedAt}
+        isDeleting={getIsPending(note.id)}
+        onDelete={deleteNote}
+      />
+    )
+  );
 
   return (
     <div className={styles.page}>
       <h1 className={styles.heading}>Notes</h1>
 
-      <div className={styles.filters}>
-        <input
-          type="text"
-          placeholder="Search notes..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className={styles.searchInput}
-        />
-
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value as NotesSortOption)}
-          className={styles.sortSelect}
-        >
-          <option value="updatedAt">Sort by: Last Updated</option>
-          <option value="createdAt">Sort by: Created Date</option>
-          <option value="content">Sort by: Content</option>
-        </select>
-      </div>
+      <FiltersLayout
+        search={<Search value={search} onChange={setSearch} />}
+        sort={<Sort value={sort} onChange={setSort} />}
+        action={<ViewMode value={viewMode} onChange={setViewMode} />}
+      />
 
       <button
         className={styles.button}
@@ -60,33 +69,14 @@ function NotesPage() {
         Create note
       </button>
 
-      <div className={styles.notes}>
-        {notes.map((note) => (
-          <div className={styles.note} key={note.id}>
-            <div className={styles.info}>
-              <Link to={href(ROUTES.NOTE, { noteId: note.id })}>
-                {getTitleFromContent(note.content)}
-              </Link>
-              <span>{dayjs(note.updatedAt).format("DD.MM.YYYY")}</span>
-            </div>
-            <button
-              className={styles.button}
-              disabled={getIsPending(note.id)}
-              onClick={() => deleteNote(note.id)}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {hasNextPage && (
-        <div ref={cursorRef} className={styles.observer}>
-          {isFetchingNextPage && "Loading more..."}
-        </div>
-      )}
-
-      {isPending && <div className={styles.loading}>Loading notes...</div>}
+      <NotesLayout
+        viewMode={viewMode}
+        notes={noteElements}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        isPending={isPending}
+        cursorRef={cursorRef}
+      />
     </div>
   );
 }

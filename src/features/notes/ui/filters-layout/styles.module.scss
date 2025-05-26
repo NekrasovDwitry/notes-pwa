@@ -1,0 +1,18 @@
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filtersMain {
+  display: flex;
+  gap: 1rem;
+  flex-grow: 1;
+}
+
+.filtersAction {
+  display: flex;
+  gap: 1rem;
+}
