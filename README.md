@@ -6,6 +6,7 @@ A modern Progressive Web Application for note-taking, built with React, TypeScri
 
 - Modern React with TypeScript
 - Fast development with Vite
+- Progressive Web App (PWA) support with offline capabilities
 - Type-safe API integration with OpenAPI
 - React Query for efficient data fetching
 - MobX for state management
