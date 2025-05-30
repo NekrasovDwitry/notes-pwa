@@ -48,7 +48,7 @@ function NotesPage() {
         isDeleting={getIsPending(note.id)}
         onDelete={deleteNote}
       />
-    )
+    ),
   );
 
   return (

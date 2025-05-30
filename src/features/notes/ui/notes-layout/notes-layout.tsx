@@ -34,4 +34,4 @@ export function NotesLayout({
       {isPending && <div className={styles.loading}>Loading notes...</div>}
     </>
   );
-} 
+}

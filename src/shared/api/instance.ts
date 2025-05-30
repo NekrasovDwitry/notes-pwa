@@ -18,15 +18,30 @@ export const publicRqClient = createClient(publicFetchClient);
 
 fetchClient.use({
   async onRequest({ request }) {
+    // Skip auth for public endpoints
+    if (request.url.includes("/auth/")) {
+      return;
+    }
+
     const token = await sessionStore.refreshToken();
 
     if (token) {
       request.headers.set("Authorization", "Bearer " + sessionStore.token);
-    } else {
+    } else if (navigator.onLine) {
+      // Only return unauthorized error if we're online
       return new Response(
         JSON.stringify({
           code: "NOT_AUTHORIZED",
           message: "Not authorized session",
+        } as ApiSchemas["Error"]),
+        { status: 401, headers: { "Content-Type": "application/json" } },
+      );
+    } else if (!sessionStore.isSessionValidForOffline()) {
+      // If offline and session is not valid for offline use
+      return new Response(
+        JSON.stringify({
+          code: "OFFLINE_SESSION_EXPIRED",
+          message: "Offline session has expired",
         } as ApiSchemas["Error"]),
         { status: 401, headers: { "Content-Type": "application/json" } },
       );
