@@ -1,0 +1,164 @@
+schemas:
+  Note:
+    type: object
+    required:
+      - id
+      - content
+      - createdAt
+      - updatedAt
+    properties:
+      id:
+        type: string
+      content:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      updatedAt:
+        type: string
+        format: date-time
+  EditNote:
+    type: object
+    required:
+      - content
+    properties:
+      content:
+        type: string
+  Notes:
+    type: object
+    required:
+      - list
+      - total
+      - totalPages
+    properties:
+      list:
+        type: array
+        items:
+          $ref: "#/schemas/Note"
+      total:
+        type: integer
+      totalPages:
+        type: integer
+
+getAllNotes:
+  summary: Get all notes for current user
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+    - name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 10
+    - name: sort
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - createdAt
+          - updatedAt
+          - content
+    - name: search
+      in: query
+      required: false
+      schema:
+        type: string
+  responses:
+    "200":
+      description: List of notes
+      content:
+        application/json:
+          schema:
+            $ref: "#/schemas/Notes"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+
+getNoteById:
+  summary: Get a note by id
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: noteId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Note
+      content:
+        application/json:
+          schema:
+            $ref: "#/schemas/Note"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"
+
+createNote:
+  summary: Create a new note
+  security:
+    - bearerAuth: []
+  responses:
+    "201":
+      description: Note created successfully
+      content:
+        application/json:
+          schema:
+            $ref: "#/schemas/Note"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+
+editNote:
+  summary: Edit a note
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: noteId
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "#/schemas/EditNote"
+  responses:
+    "201":
+      description: Note updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: "#/schemas/Note"
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"
+
+deleteNote:
+  summary: Delete a note
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: noteId
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    "204":
+      description: Note deleted successfully
+    "401":
+      $ref: "../shared/responses.yaml#/UnauthorizedError"
+    "404":
+      $ref: "../shared/responses.yaml#/NotFoundError"
