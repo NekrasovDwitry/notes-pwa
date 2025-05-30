@@ -7,18 +7,30 @@ import { enableMocking } from "@/shared/api/mocks";
 export const protectedLoader = async () => {
   await enableMocking();
 
-  const token = await sessionStore.refreshToken();
-
-  if (!token) {
-    sessionStore.logout();
-    return redirect(ROUTES.LOGIN);
+  // Try to refresh token if online
+  if (navigator.onLine) {
+    const token = await sessionStore.refreshToken();
+    if (!token) {
+      sessionStore.logout();
+      return redirect(ROUTES.LOGIN);
+    }
+  } else {
+    // If offline, check if session is valid for offline use
+    if (!sessionStore.isSessionValidForOffline()) {
+      sessionStore.logout();
+      return redirect(ROUTES.LOGIN);
+    }
   }
 
   return null;
 };
 
 export const ProtectedRoute = observer(() => {
-  if (!sessionStore.session) {
+  // Check both online and offline session validity
+  if (
+    !sessionStore.session ||
+    (!navigator.onLine && !sessionStore.isSessionValidForOffline())
+  ) {
     return <Navigate to={ROUTES.LOGIN} />;
   }
 
